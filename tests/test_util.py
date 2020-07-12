@@ -1,8 +1,8 @@
-from mcserver import util
 from click import UsageError
-import pytest
 from pathlib import Path
-import time
+import pytest
+
+from mcserver import util
 server_jar = Path('server.jar')
 
 
