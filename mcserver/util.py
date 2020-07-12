@@ -33,9 +33,9 @@ def download_from_url(url):
         url (str): Download URL for a file
     """
     response = requests.get(url, stream=True)
-    total_size = int(response.headers.get('content-length', 0))  # Megabytes
+    total_size = int(response.headers.get('content-length', 0))  # Bytes
     block_size = 1024*1024  # 1 Megabyte
-    progress_bar = tqdm(total=total_size, unit='MB', unit_scale=True)
+    progress_bar = tqdm(total=total_size, unit='B', unit_scale=True)
     with open(Path(url).name, 'wb') as f:
         for data in response.iter_content(block_size):
             progress_bar.update(len(data))
