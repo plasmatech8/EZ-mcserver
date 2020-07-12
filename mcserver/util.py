@@ -13,7 +13,7 @@ from tqdm import tqdm
 import requests
 
 
-def get_server_versions_info():
+def get_server_versions_info() -> dict:
     """Read server_versions.json. Contains information about versions of
     MineCraft, download URLs, and release dates.
 
@@ -26,7 +26,7 @@ def get_server_versions_info():
     return server_versions
 
 
-def download_from_url(url):
+def download_from_url(url: str):
     """Downloads a file from URL in 1MB chunks with a progress bar.
 
     Args:
