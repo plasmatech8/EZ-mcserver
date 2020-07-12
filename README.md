@@ -1,5 +1,9 @@
 # EZ-mcserver
 
+A CLI tool to easily download, initialise, and run a (Java) MineCraft server.
+
+Also allows installation of 3rd party mods and plugins.
+
 Complete:
 ```
 mcserver versions
