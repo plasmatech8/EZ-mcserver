@@ -136,6 +136,25 @@ def ui():
     print('ui')
 
 
+@mcserver.command()
+@click.pass_context
+def quickstart(ctx):
+    # 1) Ask for VERSION or URL
+    # 2) Ask to accept EULA
+    # 3) Download and initialise server
+    ctx.invoke(init)
+    # 4) Ask for difficulty level
+    # 5) Ask for op players
+    # 6) Ask if they would like to use whitelist system -> usernames
+    # 7) Ask if they would like to ban some players -> usernames
+    # 8) Ask if they would like to ban some ip addresses -> usernames
+    # 9) Tell them they can change settings using:
+    #       mcserver properties list/set
+    #       mcserver mods list/install/uninstall
+    #       mcserver plugins list/install/uninstall
+    #       mcserver admin op/ipban/ban/whitelist add/remove
+
+
 # ============================ Properties Group ===============================
 
 
