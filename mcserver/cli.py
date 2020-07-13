@@ -102,15 +102,32 @@ def versions():
 
 
 @mcserver.command()
-def start():
-    """Start server in working directory."""
-    print('start')
+@click.option('-w', '--world', required=False, default='world',
+              help="WORLD name to start the server with")
+@click.option('-u', '--universe', required=False, default='worlds',
+              help="UNIVERSE directory where worlds are stored")
+def start(world, universe):
+    """Start server.jar in the working directory using the command:
+        java -jar server.jar --world WORLD --universe UNIVERSE
 
+    For more flexibility, you can use the java command instead.
 
-@mcserver.command()
-def stop():
-    """Stop server in working directory."""
-    print('stop')
+    java <JAVA-SETTINGS> -jar server.jar <MINECRAFT-SETTINGS>
+
+    java -Xms512M -Xmx5G -jar server.jar --universe worlds/ --world myworld
+
+    See `java --help` and `java -X` for flags/options Java runtime.
+
+    See `java -jar server.jar --help` for flags/options for MineCraft.
+
+    Important: use options `--universe worlds/ --world <WORLD-NAME>` so that
+    EZ-mcserver can detect worlds.
+    """
+    if Path('server.jar').exists():
+        command = f'java -jar server.jar --world {world} --universe {universe}'
+        subprocess.call(command.split())
+    else:
+        raise UsageError('server.jar file does not exist. Aborted!')
 
 
 @mcserver.command()
