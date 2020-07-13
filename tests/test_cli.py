@@ -25,7 +25,7 @@ def test_mcserver_versions():
 
 
 def test_mcserver_init():
-    """Test running `mcserver versions` command.
+    """Test running `mcserver init` command.
     """
     runner = CliRunner()
     result = runner.invoke(cli.init, '-v 1.16.1 -y'.split())
