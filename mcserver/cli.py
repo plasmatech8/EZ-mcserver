@@ -26,18 +26,28 @@ def mcserver():
 
 
 @mcserver.command()
-@click.option('-v', '--version', required=False,
+@click.option('-v', '--version', required=False, confirmation_prompt=True,
               help="VERSION of MineCraft Server")
 @click.option('-u', '--url', required=False,
               help="URL to download the MineCraft Server")
-def init(version, url):
+@click.option('-y', required=False, is_flag=True,
+              help='Accept EULA and continue without confirmation prompt')
+@click.pass_context
+def init(ctx, version, url, y):
     """Initialise a server of specified VERSION or from URL into the working
-    directory."""
+    directory.
+    """
     # Input validation
     if version is not None and url is not None:
         raise UsageError('Use option VERSION or URL. Not both.')
     if version is None and url is None:
-        raise UsageError('One option is required: VERSION or URL.')
+        ctx.invoke(versions)
+        value = click.prompt('Please enter the MineCraft Server VERSION number'
+                             ' or URL to a JAR file').strip()
+        if value.startswith('http:') or value.startswith('https:'):
+            url = value
+        else:
+            version = value
     # URL passed
     if url is not None:
         server_info = {'url': url}
@@ -51,19 +61,22 @@ def init(version, url):
         server_info = versions_info[version]
 
     # Prompt message
-    print(f'\nDownload and initialise MineCraft Server into {Path.cwd()}:')
+    print(f'\nDownload and initialise this MineCraft Server under '
+          f'{Path.cwd()}:')
     print('    version:     ', version or '-')
     print('    release date:', server_info.get('date', '-'))
     print('    download url:', server_info['url'])
-    click.confirm('Do you want to continue?', default=True, abort=True)
+    if not y:
+        click.confirm('Do you want to continue?', default=True, abort=True)
 
     # Eula
     print('\nPlease read the MINECRAFT END USER LICENSE AGREEMENT:')
     print('    https://account.mojang.com/documents/minecraft_eula')
-    click.confirm('Do you accept?', abort=True)
+    if not y:
+        click.confirm('Do you accept?', default=True, abort=True)
 
     # Download
-    print('Downloading server.jar...')
+    print('\nDownloading server.jar...')
     util.download_from_url(server_info['url'])
 
     # Run
