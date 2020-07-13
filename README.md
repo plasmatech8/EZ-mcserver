@@ -22,24 +22,21 @@ mcserver worlds list/delete
 
 mcserver properties list
 mcserver properties set <PROP> <VALUE>
-
-mcserver ban list
-mcserver ban add <USERNAME>
-mcserver ban remove <USERNAME>
-
-mcserver properties list
-mcserver properties set <PROP> <VALUE>
 ```
 
 Backlog:
 ```
-mcserver ipban add <IP>
-mcserver ipban remove <IP>
-mcserver ipban list
+mcserver admin ipban add <IP>
+mcserver admin ipban remove <IP>
+mcserver admin ipban list
 
-mcserver whitelist add <USERNAME>
-mcserver whitelist remove <USERNAME>
-mcserver whitelist list
+mcserver admin ban list
+mcserver admin ban add <USERNAME>
+mcserver admin ban remove <USERNAME>
+
+mcserver admin whitelist add <USERNAME>
+mcserver admin whitelist remove <USERNAME>
+mcserver admin whitelist list
 
 mcserver quickstart
 ```
