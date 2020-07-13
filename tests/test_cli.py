@@ -27,4 +27,7 @@ def test_mcserver_versions():
 def test_mcserver_init():
     """Test running `mcserver versions` command.
     """
-    pass
+    runner = CliRunner()
+    result = runner.invoke(cli.init, '-v 1.16.1 -y'.split())
+    assert result.exit_code == 0, 'Exit code not 0, Something went wrong.'
+    assert eula_txt.exists(), 'Expected eula.txt file but not found'
