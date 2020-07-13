@@ -9,7 +9,7 @@ Utility functions for EZ-mcserver.
 import json
 from pathlib import Path
 from click import UsageError
-from tqdm import tqdm
+import click
 import requests
 
 
@@ -35,9 +35,10 @@ def download_from_url(url: str):
     response = requests.get(url, stream=True)
     total_size = int(response.headers.get('content-length', 0))  # Bytes
     block_size = 1024*1024  # 1 Megabyte
-    progress_bar = tqdm(total=total_size, unit='B', unit_scale=True)
-    with open(Path(url).name, 'wb') as f:
-        for data in response.iter_content(block_size):
-            progress_bar.update(len(data))
-            f.write(data)
-    progress_bar.close()
+    with click.progressbar(length=total_size,
+                           show_pos=True,
+                           show_percent=True) as progress_bar:
+        with open(Path(url).name, 'wb') as f:
+            for data in response.iter_content(block_size):
+                progress_bar.update(len(data))
+                f.write(data)
