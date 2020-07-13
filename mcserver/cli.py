@@ -136,6 +136,39 @@ def ui():
     print('ui')
 
 
+# ============================ Properties Group ===============================
+
+
+@mcserver.group()
+def properties():
+    """Manage properties"""
+    if not Path('server.properties').exists():
+        raise UsageError('server.properties file does not exist. Please '
+                         'initialise a server in the current working '
+                         'directory.')
+
+
+@properties.command('list')
+def properties_list():
+    """List available properties"""
+    with open('server.properties', 'r') as f:
+        print(f.read())
+
+
+@properties.command('set')
+@click.argument('prop')
+@click.argument('value')
+def properties_set(prop, value):
+    """Set a property to a value"""
+    with open('server.properties', 'r') as f:
+        props = f.read().split('\n')
+    props = [f'{prop}={value}' if line.split('=')[0] == prop else line
+             for line in props]
+    with open('server.properties', 'w') as f:
+        f.write('\n'.join(props))
+    print('Set', prop, 'to', value)
+
+
 # ============================== Mods Group ===================================
 
 
