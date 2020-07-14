@@ -175,9 +175,10 @@ def quickstart(ctx):
     ctx.invoke(properties_set, 'gamemode', gamemode)
 
     # 4) Ask for operators
-    operator = click.prompt(
+    operators = click.prompt(
         'Write usernames of server operators (whitespace delimited)'
     ).split()
+    json.dump(operators, open('ops.json', 'w'))
 
     # 5) Ask if they would like to use whitelist system -> usernames
     whitelist_on = click.confirm('Would you like to enable a whitelist?')
