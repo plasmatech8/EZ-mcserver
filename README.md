@@ -12,7 +12,7 @@ To start a server easily you should:
 2. Use command `mcserver quickstart` to install a server
 3. Use command `mcserver properties list/set` if there are any hidden properties you would like to change (see https://minecraft.gamepedia.com/Server.properties)
 3. Use command `mcserver start` to start the server
-4. Use server console / operator commands to adjust any settings (see https://minecraft.gamepedia.com/Commands#List_and_summary_of_commands)
+4. Use server console / operator commands to adjust any server/administration settings as you would normally do in a MineCraft server (see https://minecraft.gamepedia.com/Commands#List_and_summary_of_commands)
 
 ## Schema + Progress
 
