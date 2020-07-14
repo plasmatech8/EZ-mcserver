@@ -34,7 +34,7 @@ def mcserver():
 @click.option('-y', required=False, is_flag=True,
               help='Accept EULA and continue without confirmation prompt')
 @click.pass_context
-def init(ctx, version, url, y):
+def install(ctx, version, url, y):
     """Initialise a server of specified VERSION or from URL into the working
     directory.
     """
@@ -159,7 +159,7 @@ def quickstart(ctx):
     # 1) Ask for VERSION or URL
     #    Ask to accept EULA
     #    Download and initialise server
-    ctx.invoke(init)
+    ctx.invoke(install)
 
     # 2) Ask for difficulty level
     difficulty_choices = click.Choice(['peaceful',

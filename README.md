@@ -19,7 +19,7 @@ To start a server easily you should:
 Complete:
 ```
 mcserver versions
-mcserver init -v <VERSION> (or -u http://etc/server.jar)
+mcserver install -v <VERSION> (or -u http://etc/server.jar)
 mcserver quickstart
 mcserver start
 mcserver properties list
