@@ -24,10 +24,27 @@ def test_mcserver_versions():
     assert result.output, 'Unexpected output.'
 
 
-def test_mcserver_init():
-    """Test running `mcserver init` command.
+def test_mcserver_init_properties_worlds():
+    """Test running commands:
+    - install
+    - properties
+    - worlds
     """
     runner = CliRunner()
+    # Install
     result = runner.invoke(cli.install, '-v 1.16.1 -y'.split())
     assert result.exit_code == 0, 'Exit code not 0, Something went wrong.'
     assert eula_txt.exists(), 'Expected eula.txt file but not found'
+    # Properties
+    result = runner.invoke(cli.properties_list)
+    properties_output = result.output
+    assert result.exit_code == 0, 'Exit code not 0, Something went wrong.'
+    result = runner.invoke(cli.properties_set, 'level-seed BLAHBLAHBLAH')
+    assert result.exit_code == 0, 'Exit code not 0, Something went wrong.'
+    assert 'level-seed=BLAHBLAHBLAH' in properties_output, (
+        'Exit code not 0, Something went wrong.'
+    )
+    # Worlds
+    result = runner.invoke(cli.worlds_list)
+    assert result.exit_code == 0, 'Exit code not 0, Something went wrong.'
+    assert result.output, 'Unexpected output.'
