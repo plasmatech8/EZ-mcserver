@@ -11,6 +11,7 @@ from pathlib import Path
 import subprocess
 from click.exceptions import UsageError
 import click
+import requests
 
 from . import util
 
@@ -129,6 +130,14 @@ def start(world, universe):
     EZ-mcserver can detect worlds.
     """
     if Path('server.jar').exists():
+        try:
+            ip = requests.get('https://api.ipify.org').text
+            print('Starting server with public IP', ip)
+        except Exception as e:
+            print('Starting server. Public IP cannot be determined. (Ensure '
+                  'that your device has access to the internet. If using an '
+                  'instance on the cloud, ensure that firewalls/''security-'
+                  'groups/ACLs allow port 25565 traffic to the internet')
         command = f'java -jar server.jar --world {world} --universe {universe}'
         subprocess.call(command.split())
     else:
