@@ -43,7 +43,7 @@ def init(ctx, version, url, y):
     if version is None and url is None:
         ctx.invoke(versions)
         value = click.prompt('Please enter the MineCraft Server VERSION number'
-                             ' or URL to a JAR file').strip()
+                             ' or URL to a JAR file', default='1.16.1').strip()
         if value.startswith('http:') or value.startswith('https:'):
             url = value
         else:
@@ -161,18 +161,18 @@ def quickstart(ctx):
                               type=difficulty_choices,
                               show_choices=True,
                               default='normal')
-    ctx.invoke(properties_set, 'difficulty', difficulty)
+    ctx.invoke(properties_set, prop='difficulty', value=difficulty)
 
     # 3) Select gamemode
     gamemode_choices = click.Choice(['survival',
                                      'creative',
                                      'adventure',
                                      'spectator'])
-    gamemode = click.prompt('Choose a difficulty level',
+    gamemode = click.prompt('Choose a gamemode',
                             type=gamemode_choices,
                             show_choices=True,
                             default='normal')
-    ctx.invoke(properties_set, 'gamemode', gamemode)
+    ctx.invoke(properties_set, prop='gamemode', value=gamemode)
 
     # 4) Ask for operators
     operators = click.prompt(
@@ -183,13 +183,10 @@ def quickstart(ctx):
     # 5) Ask if they would like to use whitelist system -> usernames
     whitelist_on = click.confirm('Would you like to enable a whitelist?')
     if whitelist_on:
-        whitelist_users = click.prompt(
+        whitelist = click.prompt(
             'Write usernames of whitelisted players (whitespace delimited)'
         ).split()
-        ctx.invoke(properties_set, 'white-list', 'true')
-        ctx.invoke(properties_set, 'enforce-whitelist', 'true')
-        whitelist = json.load(open('whitelist.json', 'r'))
-        whitelist.extend(whitelist_users)
+        ctx.invoke(properties_set, prop='white-list', value='true')
         json.dump(whitelist, open('whitelist.json', 'w'))
 
     # 6) Tell them they can change settings
@@ -237,7 +234,7 @@ def properties_set(prop, value):
     """Set a property to a value"""
     with open('server.properties', 'r') as f:
         props = f.read().split('\n')
-    if prop not in [line[0] for line in props]:
+    if prop not in [line.split('=')[0] for line in props]:
         raise UsageError(f'{prop} property not found  in server.properties')
     props = [
         f'{prop}={value}' if line.split('=')[0] == prop
