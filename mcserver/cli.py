@@ -12,6 +12,7 @@ import subprocess
 from click.exceptions import UsageError
 import click
 import requests
+import shutil
 
 from . import util
 
@@ -35,8 +36,8 @@ def mcserver():
               help='Accept EULA and continue without confirmation prompt')
 @click.pass_context
 def install(ctx, version, url, y):
-    """Initialise a server of specified VERSION or from URL into the working
-    directory.
+    """Download and initialise a MineCraft server with the specified VERSION
+    or download URL into the working directory.
     """
     # Input validation
     if version is not None and url is not None:
@@ -153,8 +154,8 @@ def ui():
 @mcserver.command()
 @click.pass_context
 def quickstart(ctx):
-    """Quickly install a MineCraft server in the current working directory with
-    user prompts for common settings.
+    """Download and initialise a MineCraft server in the current working
+    directory and prompts questions for common settings.
     """
     # 1) Ask for VERSION or URL
     #    Ask to accept EULA
@@ -252,6 +253,41 @@ def properties_set(prop, value):
     with open('server.properties', 'w') as f:
         f.write('\n'.join(props))
     print('Set', prop, 'to', value)
+
+
+# ============================= Worlds Group ==================================
+
+
+@mcserver.group()
+def worlds():
+    """Manage worlds in the worlds/ directory (universe)"""
+    if not Path('server.jar').exists():
+        raise UsageError('server.jar file does not exist. Please '
+                         'initialise a server in the current working '
+                         'directory.')
+
+
+@worlds.command('list')
+def worlds_list():
+    """List worlds seen in the worlds/ directory (universe)"""
+    print('Worlds in the `--universe worlds/` directory:')
+    for w in Path('worlds').glob('*'):
+        if w.is_dir():
+            print('\t', w.name)
+
+
+@worlds.command('delete')
+@click.argument('name')
+@click.option('-y', required=False, is_flag=True, help='Do not ask to confirm')
+def worlds_list(name, y):
+    """Delete a world in the worlds/ directory (universe)"""
+    world_path = Path('worlds').joinpath(name)
+    if world_path not in [w for w in Path('worlds').glob('*')]:
+        raise UsageError(f'No world found under {world_path}')
+    if not y:
+        click.confirm(f'Are you sure you want to delete {world_path}?',
+                      abort=True)
+    shutil.rmtree(world_path)
 
 
 # ============================== Mods Group ===================================
