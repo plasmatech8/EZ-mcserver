@@ -168,10 +168,10 @@ def quickstart(ctx):
                                      'creative',
                                      'adventure',
                                      'spectator'])
-    gamemode = click.prompt('Choose a gamemode',
+    gamemode = click.prompt('Set gamemode',
                             type=gamemode_choices,
                             show_choices=True,
-                            default='normal')
+                            default='survival')
     ctx.invoke(properties_set, prop='gamemode', value=gamemode)
 
     # 4) Ask for operators
@@ -182,11 +182,11 @@ def quickstart(ctx):
 
     # 5) Ask if they would like to use whitelist system -> usernames
     whitelist_on = click.confirm('Would you like to enable a whitelist?')
+    ctx.invoke(properties_set, prop='white-list', value=whitelist_on)
     if whitelist_on:
         whitelist = click.prompt(
             'Write usernames of whitelisted players (whitespace delimited)'
         ).split()
-        ctx.invoke(properties_set, prop='white-list', value='true')
         json.dump(whitelist, open('whitelist.json', 'w'))
 
     # 6) Tell them they can change settings
