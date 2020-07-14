@@ -148,27 +148,45 @@ def quickstart(ctx):
     user prompts for common settings.
     """
     # 1) Ask for VERSION or URL
-    # 2) Ask to accept EULA
-    # 3) Download and initialise server
+    #    Ask to accept EULA
+    #    Download and initialise server
     ctx.invoke(init)
-    # 4) Ask for difficulty level
-    # 5) Ask for op players
-    # 6) Ask if they would like to use whitelist system -> usernames
-    # 7) Ask if they would like to ban some players -> usernames
-    # 8) Ask if they would like to ban some ip addresses -> usernames
-    # 9) Tell them they can change settings
+
+    # 2) Ask for difficulty level
+    choices = click.Choice(['peaceful', 'easy', 'normal', 'hard'])
+    difficulty = click.prompt('Choose a difficulty level', type=choices,
+                              show_choices=True, default='normal')
+
+    # 3) Ask for op players
+    operator = click.prompt(
+        'Write usernames of server operators (whitespace delimited)'
+    ).split()
+
+    # 4) Ask if they would like to use whitelist system -> usernames
+    whitelist_on = click.confirm('Would you like to enable a whitelist?')
+    if whitelist_on:
+        whitelist_users = click.prompt(
+            'Write usernames of whitelisted players (whitespace delimited)'
+        ).split()
+        ctx.invoke(properties_set, 'white-list', 'true')
+        ctx.invoke(properties_set, 'enforce-whitelist', 'true')
+        whitelist = json.load(open('whitelist.json', 'r'))
+        whitelist.extend(whitelist_users)
+        json.dump(whitelist, open('whitelist.json', 'w'))
+
+    # 5) Tell them they can change settings
     print(
         '\nYou can change further settings using commands:',
         'mcserver properties list/set',
         'mcserver mods list/install/uninstall',
         'mcserver plugins list/install/uninstall',
-        'mcserver admin op/ipban/ban/whitelist add/remove',
         sep='\n\t'
     )
-    #       mcserver properties list/set
-    #       mcserver mods list/install/uninstall
-    #       mcserver plugins list/install/uninstall
-    #       mcserver admin op/ipban/ban/whitelist add/remove
+    print('Server settings (exluding plugins and mods) can be edited by '
+          'starting the server and using commands in the MineCraft server '
+          'console, or by using commands as an operator in-game: '
+          'see https://minecraft.gamepedia.com/Commands#List_and_summary_of_co'
+          'mmands')
 
 
 # ============================ Properties Group ===============================
@@ -187,6 +205,9 @@ def properties():
 def properties_list():
     """List available properties"""
     with open('server.properties', 'r') as f:
+        print('\n\t(Please see '
+              'https://minecraft.gamepedia.com/Server.properties for info '
+              'about server properties)\n')
         print(f.read())
 
 
@@ -197,8 +218,12 @@ def properties_set(prop, value):
     """Set a property to a value"""
     with open('server.properties', 'r') as f:
         props = f.read().split('\n')
-    props = [f'{prop}={value}' if line.split('=')[0] == prop else line
-             for line in props]
+    if prop not in [line[0] for line in props]:
+        raise UsageError(f'{prop} property not found  in server.properties')
+    props = [
+        f'{prop}={value}' if line.split('=')[0] == prop
+        else line for line in props
+    ]
     with open('server.properties', 'w') as f:
         f.write('\n'.join(props))
     print('Set', prop, 'to', value)
