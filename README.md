@@ -24,20 +24,20 @@ mcserver quickstart
 mcserver start
 mcserver properties list
 mcserver properties set <PROP> <VALUE>
+mcserver worlds list/delete
 ```
 
 In progress:
 ```
 mcserver mods list/install/uninstall
 mcserver plugins list/install/uninstall
-mcserver worlds list/delete
-mcserver howto # shows how to use this tool, and how to do admin after installing a server
 ```
 
 Backlog:
 ```
 mcserver ui
-# (may not be necessary as this can be managed from within server)
+mcserver howto # shows how to use this tool, and how to do admin after installing a server
+# (may not be necessary as this can be managed from within server instead)
 mcserver admin ipban add <IP>
 mcserver admin ipban remove <IP>
 mcserver admin ipban list
