@@ -128,7 +128,7 @@ def start(world, universe):
     See `java -jar server.jar --help` for flags/options for MineCraft.
 
     Important: use options `--universe worlds/ --world <WORLD-NAME>` so that
-    EZ-mcserver can detect worlds.
+    EZ-mcserver can detect worlds (only sees worlds in worlds/ directory).
     """
     if Path('server.jar').exists():
         try:
