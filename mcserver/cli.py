@@ -153,16 +153,33 @@ def quickstart(ctx):
     ctx.invoke(init)
 
     # 2) Ask for difficulty level
-    choices = click.Choice(['peaceful', 'easy', 'normal', 'hard'])
-    difficulty = click.prompt('Choose a difficulty level', type=choices,
-                              show_choices=True, default='normal')
+    difficulty_choices = click.Choice(['peaceful',
+                                       'easy',
+                                       'normal',
+                                       'hard'])
+    difficulty = click.prompt('Choose difficulty level',
+                              type=difficulty_choices,
+                              show_choices=True,
+                              default='normal')
+    ctx.invoke(properties_set, 'difficulty', difficulty)
 
-    # 3) Ask for op players
+    # 3) Select gamemode
+    gamemode_choices = click.Choice(['survival',
+                                     'creative',
+                                     'adventure',
+                                     'spectator'])
+    gamemode = click.prompt('Choose a difficulty level',
+                            type=gamemode_choices,
+                            show_choices=True,
+                            default='normal')
+    ctx.invoke(properties_set, 'gamemode', gamemode)
+
+    # 4) Ask for operators
     operator = click.prompt(
         'Write usernames of server operators (whitespace delimited)'
     ).split()
 
-    # 4) Ask if they would like to use whitelist system -> usernames
+    # 5) Ask if they would like to use whitelist system -> usernames
     whitelist_on = click.confirm('Would you like to enable a whitelist?')
     if whitelist_on:
         whitelist_users = click.prompt(
@@ -174,7 +191,7 @@ def quickstart(ctx):
         whitelist.extend(whitelist_users)
         json.dump(whitelist, open('whitelist.json', 'w'))
 
-    # 5) Tell them they can change settings
+    # 6) Tell them they can change settings
     print(
         '\nYou can change further settings using commands:',
         'mcserver properties list/set',
@@ -182,11 +199,12 @@ def quickstart(ctx):
         'mcserver plugins list/install/uninstall',
         sep='\n\t'
     )
-    print('Server settings (exluding plugins and mods) can be edited by '
-          'starting the server and using commands in the MineCraft server '
-          'console, or by using commands as an operator in-game: '
-          'see https://minecraft.gamepedia.com/Commands#List_and_summary_of_co'
-          'mmands')
+    print(
+        'Server settings (not plugins and mods) can be edited by starting the '
+        'server and using commands in the MineCraft server console or by using'
+        ' operator commands in-game: see https://minecraft.gamepedia.com/Comma'
+        'nds#List_and_summary_of_commands'
+    )
 
 
 # ============================ Properties Group ===============================
