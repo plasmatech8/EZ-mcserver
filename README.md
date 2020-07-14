@@ -27,7 +27,7 @@ mcserver properties set <PROP> <VALUE>
 mcserver worlds list/delete
 ```
 
-In progress:
+To-Do (need to research mods and plugins):
 ```
 mcserver mods list/install/uninstall
 mcserver plugins list/install/uninstall
