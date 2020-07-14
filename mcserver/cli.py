@@ -61,17 +61,22 @@ def init(ctx, version, url, y):
         server_info = versions_info[version]
 
     # Prompt message
-    print(f'\nDownload and initialise this MineCraft Server under '
-          f'{Path.cwd()}:')
-    print('    version:     ', version or '-')
-    print('    release date:', server_info.get('date', '-'))
-    print('    download url:', server_info['url'])
+    print(
+        f'\nDownload and initialise this MineCraft Server under {Path.cwd()}:',
+        f'version:      {version or "-"}',
+        f'release date: {server_info.get("date", "-")}',
+        f'download url: {server_info["url"]}',
+        sep='\n\t'
+    )
     if not y:
         click.confirm('Do you want to continue?', default=True, abort=True)
 
     # Eula
-    print('\nPlease read the MINECRAFT END USER LICENSE AGREEMENT:')
-    print('    https://account.mojang.com/documents/minecraft_eula')
+    print(
+        '\nPlease read the MINECRAFT END USER LICENSE AGREEMENT:',
+        'https://account.mojang.com/documents/minecraft_eula',
+        sep='\n\t'
+    )
     if not y:
         click.confirm('Do you accept?', default=True, abort=True)
 
@@ -139,6 +144,9 @@ def ui():
 @mcserver.command()
 @click.pass_context
 def quickstart(ctx):
+    """Quickly install a MineCraft server in the current working directory with
+    user prompts for common settings.
+    """
     # 1) Ask for VERSION or URL
     # 2) Ask to accept EULA
     # 3) Download and initialise server
@@ -148,7 +156,15 @@ def quickstart(ctx):
     # 6) Ask if they would like to use whitelist system -> usernames
     # 7) Ask if they would like to ban some players -> usernames
     # 8) Ask if they would like to ban some ip addresses -> usernames
-    # 9) Tell them they can change settings using:
+    # 9) Tell them they can change settings
+    print(
+        '\nYou can change further settings using commands:',
+        'mcserver properties list/set',
+        'mcserver mods list/install/uninstall',
+        'mcserver plugins list/install/uninstall',
+        'mcserver admin op/ipban/ban/whitelist add/remove',
+        sep='\n\t'
+    )
     #       mcserver properties list/set
     #       mcserver mods list/install/uninstall
     #       mcserver plugins list/install/uninstall
