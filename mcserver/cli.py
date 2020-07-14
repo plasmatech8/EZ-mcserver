@@ -279,7 +279,7 @@ def worlds_list():
 @worlds.command('delete')
 @click.argument('name')
 @click.option('-y', required=False, is_flag=True, help='Do not ask to confirm')
-def worlds_list(name, y):
+def worlds_delete(name, y):
     """Delete a world in the worlds/ directory (universe)"""
     world_path = Path('worlds').joinpath(name)
     if world_path not in [w for w in Path('worlds').glob('*')]:
