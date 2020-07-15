@@ -2,7 +2,7 @@
 
 A CLI tool to easily download, initialise, and run a (Java) MineCraft server.
 
-Also allows installation of 3rd party mods and plugins.
+~~Also allows installation of 3rd party mods and plugins.~~
 
 ## How-To
 
@@ -27,14 +27,15 @@ mcserver properties set <PROP> <VALUE>
 mcserver worlds list/delete
 ```
 
-To-Do (need to research mods and plugins):
+To-Do:
 ```
-mcserver mods list/install/uninstall
-mcserver plugins list/install/uninstall
+-
 ```
 
 Backlog:
 ```
+mcserver mods list/install/uninstall
+mcserver plugins list/install/uninstall
 mcserver ui
 mcserver howto # shows how to use this tool, and how to do admin after installing a server
 # (may not be necessary as this can be managed from within server instead)

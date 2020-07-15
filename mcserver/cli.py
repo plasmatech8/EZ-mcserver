@@ -203,8 +203,6 @@ def quickstart(ctx):
     print(
         '\nYou can change further settings using commands:',
         'mcserver properties list/set',
-        'mcserver mods list/install/uninstall',
-        'mcserver plugins list/install/uninstall',
         sep='\n\t'
     )
     print(
@@ -288,60 +286,6 @@ def worlds_delete(name, y):
         click.confirm(f'Are you sure you want to delete {world_path}?',
                       abort=True)
     shutil.rmtree(world_path)
-
-
-# ============================== Mods Group ===================================
-
-
-@mcserver.group()
-def mods():
-    """Manage mods"""
-    print('mods')
-
-
-@mods.command('list')
-def mods_list():
-    """List available mods"""
-    print('mods')
-
-
-@mods.command('install')
-def mods_install():
-    """Install a mod"""
-    print('mods')
-
-
-@mods.command('uninstall')
-def mods_uninstall():
-    """Uninstall a mod"""
-    print('mods')
-
-
-# ============================== Plugins Group ================================
-
-
-@mcserver.group()
-def plugins():
-    """Install a plugin"""
-    print('plugins')
-
-
-@plugins.command('list')
-def plugins_list():
-    """List available plugins"""
-    print('plugins')
-
-
-@plugins.command('install')
-def plugins_install():
-    """Install a plugin"""
-    print('plugins')
-
-
-@plugins.command('uninstall')
-def plugins_uninstall():
-    """Uninstall a plugin"""
-    print('plugins')
 
 
 # =============================================================================
